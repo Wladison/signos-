@@ -23,7 +23,7 @@ if (isset($_POST['button1'])) {
     // Transformando arquivo XML em Objeto
     $xml = simplexml_load_file('signos.xml');
     
-    // Percorre todos os registros de vendas
+    // Percorre todos os registros 
     foreach($xml->signo as $registro):
 
         $aniversarioDia =  intval(date('d', strtotime($data)));
