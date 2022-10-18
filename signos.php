@@ -14,41 +14,42 @@
  </h4>
  <?php
 if (isset($_POST['button1'])) {
- 
-    //Variaveis de POST, Alterar somente se necessário 
-    //====================================================
-    $nome ="";
-    $age ="";
-    
+
     $nome = $_POST['nome'];
-    $age = $_POST['data'];
+    $data = $_POST['data'];
 
-
-
-   echo "Ola $nome " . '<br>';
+   echo "Ola $nome seu signo é: " ;
  
     // Transformando arquivo XML em Objeto
     $xml = simplexml_load_file('signos.xml');
     
-    // Exibe as informações do XML
-    echo 'Título: ' . $xml->titulo . '<br>';
-
     // Percorre todos os registros de vendas
     foreach($xml->signo as $registro):
-        $aniversario =  date('d-m',strtotime($age));
 
-         echo $registro->signoNome. '<br>';
-         echo "inicio:  ";
-         echo  $registro->diaInicio ; 
-         echo  $registro->mesInicio . '<br>';
-         echo  $aniversario . '<br>';
-         echo "fim:  ";
-         echo $registro->diaFim ;
-         echo $registro->mesFim . '<br>';
-         echo $registro->descricao . '<br>';
-         echo '<hr>';
+        $aniversarioDia =  intval(date('d', strtotime($data)));
+        $aniversarioMes =  intval(date('m', strtotime($data)));
+
+        $mesInicio = intval($registro->mesInicio);
+        $diaInicio = intval($registro->diaInicio);
+
+        $mesFim = intval($registro->mesFim);
+        $diaFim = intval($registro->diaFim);
 
 
+        // se o mes esta entre os meses do signo 
+        // OU se o mes é igual ao mes de inicio e o dia é maior 
+        // OU o mes é igual ao mes fim e o dia é menor que o dia fim
+        
+         if (
+          ($aniversarioMes > $mesInicio && $aniversarioMes < $mesFim)
+         || ($aniversarioMes == $mesInicio && $aniversarioDia >= $diaInicio)
+         || ($aniversarioMes ==  $mesFim  && $aniversarioDia <= $diaFim)
+         ) {
+            echo '<b>';
+            echo  $registro->signoNome. '</b><br>';
+            echo $registro->descricao . '<br>';
+            echo '<hr>';
+         }
     endforeach;
 }
 
